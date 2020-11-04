@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/bg_space_seamless.jpg-4a60eac888f8fd705005b7f005de2d45.image"
+
+[deps]
+
+source_file="res://sprite/bg_space_seamless.jpg"
+dest_files=[ "res://.import/bg_space_seamless.jpg-4a60eac888f8fd705005b7f005de2d45.image" ]
+
+[params]
+
