@@ -6,17 +6,26 @@ export(float) var angle_rotation_interp = 0.2
 
 var planet_position
 onready var planet_node = get_parent().get_node("planet")
+onready var gun_front_pos = get_node("GunFrontPos2D")
+onready var bullet_node = get_parent().get_node("bullets")
+
+const ShootManager = preload("res://scripts/shoot_mgr.gd")
+var shoot_manager
 
 func _ready():
 	planet_position = planet_node.position
-	pass # Replace with function body.
-
-func _process(delta):
+	shoot_manager = ShootManager.new()
+	shoot_manager.init(self)
 	pass
+
+#func _process(delta):
+#	pass
 
 func _physics_process(delta):
 	var cursor_pos = planet_node.get_local_mouse_position()
 	var current_pos_from_planet = self.global_position - planet_node.global_position
+	
+	### START MOVEMENT
 	
 	# Move ship to cursor pos
 	
@@ -38,6 +47,14 @@ func _physics_process(delta):
 	#var angle_ship = cursor_pos_local.angle() - self.rotation + PI/2
 	#var angle_ship_lerp = lerp(0.0, angle_ship, angle_rotation_interp)
 	
-	self.rotation = cursor_pos_local.angle() + PI/2
+	self.rotation = cursor_pos_local.angle()
+	
+	### END MOVEMENT
+	
+	### START SHOOT
+	if Input.is_action_pressed("shoot"):
+		shoot_manager.shoot()
+	
+	### END SHOOT
 	
 	pass
