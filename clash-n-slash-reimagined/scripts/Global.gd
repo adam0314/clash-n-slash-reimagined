@@ -16,7 +16,10 @@ const max_distance_from_planet = 620.0
 
 ### Enemies
 
-enum EnemyType {SMALL}
+enum EnemyType {
+	SMALL = 0,
+	KEK = 1
+}
 
 const enemy_speed = {
 	EnemyType.SMALL: 40.0

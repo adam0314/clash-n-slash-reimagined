@@ -1,18 +1,22 @@
 extends Node2D
 
 var time_elapsed = 0.0
-onready var enemy_small = preload("res://scenes/enemy_small.tscn")
-const time_to_spawn = 0.2
+onready var enemy_tscn = {
+	Global.EnemyType.SMALL: preload("res://scenes/enemy_small.tscn")
+	}
+
+var enemies_array : Array = Levels.create_level_spawn_data(Levels.Level.ONE)
 
 func _ready():
 	pass
 
 func _physics_process(delta):
+	for enemy in enemies_array:
+		if time_elapsed >= enemy.time_of_spawn:
+			#print("spawned!")
+			var e = enemy_tscn[enemy.enemy_type].instance()
+			e.position = enemy.initial_position
+			enemies_array.erase(enemy)
+			add_child(e)
 	time_elapsed += delta
-	var enemies = get_child_count()
-	if time_elapsed > time_to_spawn and enemies < 100:
-		time_elapsed = 0.0
-		var e = enemy_small.instance()
-		e.position = Vector2(Global.max_distance_from_planet,0.0).rotated(rand_range(0, 2*PI))
-		add_child(e)
 	pass
