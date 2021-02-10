@@ -1,12 +1,22 @@
 extends Node
 
+### Weapons
+
+enum WeaponType {
+	LASER1
+}
+
+const weapon_firerate = {
+	WeaponType.LASER1: 3.0
+}
+
+const weapon_sounds = {
+	WeaponType.LASER1: preload("res://sound/pewpews/pewpew_1.wav")
+}
+
 ### Bullets
 
 enum BulletType {LASER}
-
-const bullet_firerate = {
-	BulletType.LASER: 3.0
-}
 
 const bullet_speed = {
 	BulletType.LASER: 400.0

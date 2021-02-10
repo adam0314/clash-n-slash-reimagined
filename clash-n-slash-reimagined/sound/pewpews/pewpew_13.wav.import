@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/pewpew_13.wav-85b2cbec1d4c1c4d13c9f090b2ff9a91.sample"
+
+[deps]
+
+source_file="res://sound/pewpews/pewpew_13.wav"
+dest_files=[ "res://.import/pewpew_13.wav-85b2cbec1d4c1c4d13c9f090b2ff9a91.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

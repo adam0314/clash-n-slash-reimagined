@@ -8,6 +8,7 @@ var planet_position
 onready var planet_node = get_parent().get_node("planet")
 onready var gun_front_pos = get_node("GunFrontPos2D")
 onready var bullet_node = get_parent().get_node("bullets")
+onready var gun_sound_node = $GunSound
 
 const ShootManager = preload("res://scripts/shoot_mgr.gd")
 var shoot_manager
