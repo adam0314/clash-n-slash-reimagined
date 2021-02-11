@@ -1,10 +1,12 @@
 extends KinematicBody2D
 
-var speed = Global.enemy_speed[Global.EnemyType.SMALL]
+var enemy_type = Global.EnemyType.SMALL
+
+var speed = Global.enemy_speed[enemy_type]
 
 const wander_radius = 2.0
-const wander_distance = 10.0
-const wander_jitter = 0.01
+const wander_distance = 15.0
+const wander_jitter = 0.02
 
 var wander_target : Vector2
 var front
@@ -53,5 +55,10 @@ func _physics_process(delta):
 func register_hit(bullet_type):
 	match bullet_type:
 		Global.BulletType.LASER:
-			queue_free()
+			die()
+	pass
+
+func die():
+	get_parent().handle_enemy_death(enemy_type)
+	queue_free()
 	pass

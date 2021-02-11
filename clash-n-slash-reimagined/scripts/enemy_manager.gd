@@ -20,3 +20,10 @@ func _physics_process(delta):
 			add_child(e)
 	time_elapsed += delta
 	pass
+
+func handle_enemy_death(enemy_type):
+	match enemy_type:
+		Global.EnemyType.SMALL:
+			GameState.player_data.add_xp(100)
+	GameState.get_gui_node().update_points(GameState.player_data.points)
+	pass

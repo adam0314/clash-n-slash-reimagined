@@ -7,7 +7,7 @@
 radius = 16.8981
 height = 9.01933
 
-[node name="enemy_smail" type="KinematicBody2D" groups=[
+[node name="enemy_small" type="KinematicBody2D" groups=[
 "enemy",
 ]]
 collision_layer = 4

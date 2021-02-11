@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/ParallaxBackground.gd" type="Script" id=1]
 [ext_resource path="res://scripts/enemy_manager.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scripts/player.gd" type="Script" id=7]
 [ext_resource path="res://scripts/planet.gd" type="Script" id=8]
 [ext_resource path="res://sound/music/ayy_lmao_loop.ogg" type="AudioStream" id=9]
+[ext_resource path="res://scripts/ui_handler.gd" type="Script" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 13.7861
@@ -20,6 +21,7 @@ radius = 60.0
 [node name="level" type="Node2D"]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+pause_mode = 2
 scroll_ignore_camera_zoom = true
 script = ExtResource( 1 )
 
@@ -57,7 +59,14 @@ z_index = -1
 [node name="GunSound" type="AudioStreamPlayer" parent="player"]
 volume_db = -10.0
 
+[node name="GunLeftPos2D" type="Position2D" parent="player"]
+position = Vector2( 12.5, -10 )
+
+[node name="GunRightPos2D" type="Position2D" parent="player"]
+position = Vector2( 12.5, 10 )
+
 [node name="planet" type="KinematicBody2D" parent="."]
+pause_mode = 2
 script = ExtResource( 8 )
 __meta__ = {
 "_edit_group_": true
@@ -72,20 +81,85 @@ texture = ExtResource( 6 )
 visible = false
 shape = SubResource( 2 )
 
-[node name="Camera2D" type="Camera2D" parent="planet"]
-current = true
-
 [node name="Light2D" type="Light2D" parent="planet"]
 texture = ExtResource( 4 )
 range_layer_min = -100
 range_layer_max = -1
+
+[node name="Camera2D" type="Camera2D" parent="planet"]
+current = true
 
 [node name="bullets" type="Node2D" parent="."]
 
 [node name="enemies" type="Node2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." groups=[
+"music",
+]]
+pause_mode = 2
 stream = ExtResource( 9 )
 volume_db = -2.0
 autoplay = true
+
+[node name="UiLayer" type="CanvasLayer" parent="."]
+pause_mode = 2
+layer = 10
+follow_viewport_enable = true
+
+[node name="UiMainContainer" type="VBoxContainer" parent="UiLayer" groups=[
+"ui",
+]]
+margin_left = -501.743
+margin_top = -300.446
+margin_right = 522.257
+margin_bottom = 299.554
+rect_min_size = Vector2( 1024, 600 )
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PointsLabel" type="Label" parent="UiLayer/UiMainContainer"]
+margin_right = 1024.0
+margin_bottom = 14.0
+text = "points: 0"
+
+[node name="UpgReadyNode" type="Label" parent="UiLayer/UiMainContainer"]
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 32.0
+text = "upgrade available, press F hehe"
+
+[node name="PopupLayer" type="CanvasLayer" parent="UiLayer"]
+layer = 9
+
+[node name="UpgradePanel" type="PopupPanel" parent="UiLayer/PopupLayer"]
+self_modulate = Color( 0.054902, 0.172549, 0.945098, 0.509804 )
+margin_left = -512.0
+margin_top = -300.0
+rect_min_size = Vector2( 1024, 600 )
+mouse_filter = 1
+popup_exclusive = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="UiLayer/PopupLayer/UpgradePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="Button" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer"]
+margin_left = 459.0
+margin_top = 286.0
+margin_right = 557.0
+margin_bottom = 306.0
+text = "upgrade laser"
+[connection signal="pressed" from="UiLayer/PopupLayer/UpgradePanel/CenterContainer/TextureButton" to="UiLayer/UiMainContainer" method="_on_TextureButton_pressed"]

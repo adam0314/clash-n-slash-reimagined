@@ -7,10 +7,12 @@ export(float) var angle_rotation_interp = 0.2
 var planet_position
 onready var planet_node = get_parent().get_node("planet")
 onready var gun_front_pos = get_node("GunFrontPos2D")
+onready var gun_left_pos = get_node("GunLeftPos2D")
+onready var gun_right_pos = get_node("GunRightPos2D")
 onready var bullet_node = get_parent().get_node("bullets")
 onready var gun_sound_node = $GunSound
 
-const ShootManager = preload("res://scripts/shoot_mgr.gd")
+const ShootManager = preload("res://scripts/shoot_manager.gd")
 var shoot_manager
 
 func _ready():
