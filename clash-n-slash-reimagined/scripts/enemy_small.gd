@@ -11,6 +11,14 @@ const wander_jitter = 0.02
 var wander_target : Vector2
 var front
 
+var alive = true
+var time_to_delete_after_kill = 1.0 # in seconds
+var dead_time = 0.0
+
+onready var sprite : Sprite = $Sprite
+onready var collision_shape : CollisionShape2D = $CollisionShape2D
+onready var oof_player : AudioStreamPlayer = $OofPlayer
+
 func _ready():
 	var vector_to_planet = -global_position.normalized();
 	set_rotation(vector_to_planet.angle())
@@ -20,6 +28,12 @@ func _ready():
 
 func _physics_process(delta):
 	
+	if not alive:
+		dead_time += delta
+		if dead_time >= time_to_delete_after_kill:
+			queue_free()
+		return
+		
 	# Wander
 	
 	wander_target += Vector2(rand_range(-1.0, 1.0) * wander_jitter, rand_range(-1.0, 1.0) * wander_jitter)
@@ -60,5 +74,10 @@ func register_hit(bullet_type):
 
 func die():
 	get_parent().handle_enemy_death(enemy_type)
-	queue_free()
+	alive = false
+	sprite.visible = false
+	collision_shape.disabled = true
+	oof_player.pitch_scale = rand_range(0.9, 1.1)
+	oof_player.play(0.4)
+	# TODO: Add animation of enemy getting destroyed
 	pass

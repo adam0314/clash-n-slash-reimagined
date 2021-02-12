@@ -11,5 +11,5 @@ dest_files=[ "res://.import/roblox-death-sound.ogg-99d43bfd356b7b0f50716524bf162
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
