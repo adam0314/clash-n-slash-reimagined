@@ -24,6 +24,6 @@ func _physics_process(delta):
 func handle_enemy_death(enemy_type):
 	match enemy_type:
 		Global.EnemyType.SMALL:
-			GameState.player_data.add_xp(100)
-	GameState.get_gui_node().update_points(GameState.player_data.points)
+			GameState.player_state.add_xp(100)
+	GameState.get_gui_node().update_points(GameState.player_state.points)
 	pass

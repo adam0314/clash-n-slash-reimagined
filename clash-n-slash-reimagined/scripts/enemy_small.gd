@@ -68,7 +68,7 @@ func _physics_process(delta):
 
 func register_hit(bullet_type):
 	match bullet_type:
-		Global.BulletType.LASER:
+		Weapons.BulletType.LASER:
 			die()
 	pass
 
