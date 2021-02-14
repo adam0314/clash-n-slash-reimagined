@@ -194,10 +194,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureButton" type="Button" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer"]
+[node name="UpgradeButton" type="Button" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer"]
 margin_left = 459.0
 margin_top = 286.0
 margin_right = 557.0
 margin_bottom = 306.0
 text = "upgrade laser"
-[connection signal="pressed" from="UiLayer/PopupLayer/UpgradePanel/CenterContainer/TextureButton" to="UiLayer/UiMainContainer" method="_on_TextureButton_pressed"]

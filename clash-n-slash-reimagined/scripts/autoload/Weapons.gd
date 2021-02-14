@@ -14,16 +14,30 @@ enum WeaponType {
 	LASER
 }
 
-const weapon_firerate = {
-	WeaponType.LASER: 3.0,
+const weapon_params = {
+	WeaponType.LASER: {
+		"firerate": 3.0,
+		"reload_time": 1.0,
+		"bullets_per_shot": 1,
+		"clip_size": 8,
+		"sound": preload("res://sound/pewpews/pewpew_1.wav"),
+		"bullet": {
+			"node": preload("res://scenes/bullet_laser.tscn"),
+			"speed": 400.0
+		},
+		"max_parameters": {
+			"firerate": 8.0,
+			"reload_time": 0.4,
+			"bullet_speed": 800.0,
+			"clip_size": 16
+		}
+		
+		# TODO: Maybe add maximum (or minimum) values of some parameters here, like max clip_size
+	}
 }
 
-const weapon_sounds = {
-	WeaponType.LASER: preload("res://sound/pewpews/pewpew_1.wav")
-}
-
-const bullet_nodes = {
-	BulletType.LASER: preload("res://scenes/bullet_laser.tscn")
+enum WeaponUpgrades {
+	BULLETS_TWO, BULLETS_THREE, FASTER_RELOAD, FASTER_BULLET_SPEED, MORE_CLIP_SIZE, FASTER_FIRERATE
 }
 
 func get_gui_node():
@@ -34,7 +48,7 @@ func get_gui_node():
 func create_new_weapon(weapon_type):
 	match weapon_type:
 		WeaponType.LASER:
-			return LaserModel.new(weapon_firerate[weapon_type], 1.0, 1, 8, self, bullet_nodes[BulletType.LASER], bullet_speed[BulletType.LASER])
+			return LaserModel.new(self, weapon_params[WeaponType.LASER])
 		_:
 			return null
 
@@ -47,9 +61,9 @@ func add_timer(timer):
 class WeaponModel:
 	
 	var type
-	var firerate : float
+	var firerate : float setget set_firerate
 	var firerate_timer : Timer
-	var reload_time : float
+	var reload_time : float setget set_reload_time
 	var reload_timer : Timer
 	var weapons_global_node
 	var shot_sound
@@ -59,18 +73,18 @@ class WeaponModel:
 	signal update_ammo_label
 	signal update_cursor_reloading
 	
-	func _init(w, f, r_t, t_p_n):
+	func _init(wpn_glb_node, w, f, r_t):
 		type = w
 		firerate = f
 		reload_time = r_t
-		weapons_global_node = t_p_n
+		weapons_global_node = wpn_glb_node
 		
 		firerate_timer = Timer.new()
 		reload_timer = Timer.new()
 		firerate_timer.connect("timeout", self, "_on_firerate_timer_timeout")
 		reload_timer.connect("timeout", self, "_on_reload_timer_timeout")
 		firerate_timer.wait_time = 1.0 / firerate
-		reload_timer.wait_time = 1.0 / reload_time
+		reload_timer.wait_time = reload_time
 		weapons_global_node.add_child(firerate_timer)
 		weapons_global_node.add_child(reload_timer)
 		
@@ -95,6 +109,16 @@ class WeaponModel:
 	
 	func get_percent_reloaded():
 		return clamp((reload_time - reload_timer.time_left)/reload_time, 0.0, 1.0)
+	
+	func set_firerate(firerate_to_set):
+		firerate = firerate_to_set
+		firerate_timer.wait_time = 1.0 / firerate_to_set
+		pass
+	
+	func set_reload_time(reload_time_to_set):
+		reload_time = reload_time_to_set
+		reload_timer.wait_time = reload_time_to_set
+		pass
 
 class LaserModel extends WeaponModel:
 	
@@ -104,13 +128,13 @@ class LaserModel extends WeaponModel:
 	var bullet_node
 	var bullet_speed : float
 	
-	func _init(f, r_t, bps, c_s, t_p_n, b_n, b_s).(WeaponType.LASER, f, r_t, t_p_n):
-		bullets_per_shot = bps
-		clip_size = c_s
-		shot_sound = weapon_sounds[WeaponType.LASER]
-		bullet_node = b_n
-		bullet_speed = b_s
-		ammo_left = clip_size
+	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.LASER, weapon_params.firerate, weapon_params.reload_time):
+		bullets_per_shot = weapon_params.bullets_per_shot
+		clip_size = weapon_params.clip_size
+		shot_sound = weapon_params.sound
+		bullet_node = weapon_params.bullet.node
+		bullet_speed = weapon_params.bullet.speed
+		ammo_left = weapon_params.clip_size
 	
 	func shoot_if_possible():
 		if can_shoot:
@@ -142,4 +166,42 @@ class LaserModel extends WeaponModel:
 		reload_timer.start()
 		self.emit_signal("update_ammo_label")
 		self.emit_signal("update_cursor_reloading")
+		pass
+	
+	func get_available_upgrades():
+		var av_upgs = Weapons.WeaponUpgrades.values()
+		match bullets_per_shot:
+			1:
+				av_upgs.erase(Weapons.WeaponUpgrades.BULLETS_THREE)
+			2:
+				av_upgs.erase(Weapons.WeaponUpgrades.BULLETS_TWO)
+			_:
+				av_upgs.erase(Weapons.WeaponUpgrades.BULLETS_TWO)
+				av_upgs.erase(Weapons.WeaponUpgrades.BULLETS_THREE)
+		if reload_time <= 0.4:
+			av_upgs.erase(Weapons.WeaponUpgrades.FASTER_RELOAD)
+		if bullet_speed >= 800.0:
+			av_upgs.erase(Weapons.WeaponUpgrades.FASTER_BULLET_SPEED)
+		if clip_size >= 16:
+			av_upgs.erase(Weapons.WeaponUpgrades.MORE_CLIP_SIZE)
+		if firerate >= 8.0:
+			av_upgs.erase(Weapons.WeaponUpgrades.MORE_CLIP_SIZE)
+		return av_upgs
+	
+	func upgrade_weapon(upgrade_to_apply):
+		var max_params = Weapons.weapon_params[type].max_parameters
+		match upgrade_to_apply:
+			Weapons.WeaponUpgrades.BULLETS_TWO:
+				bullets_per_shot += 1
+			Weapons.WeaponUpgrades.BULLETS_THREE:
+				bullets_per_shot += 1
+			Weapons.WeaponUpgrades.FASTER_RELOAD:
+				set_reload_time(max(reload_time - 0.1, max_params.reload_time)) # Minimum reload time
+			Weapons.WeaponUpgrades.FASTER_BULLET_SPEED:
+				bullet_speed = min(bullet_speed + 50.0, max_params.bullet_speed) # Maximum bullet speed
+			Weapons.WeaponUpgrades.MORE_CLIP_SIZE:
+				clip_size = min(clip_size + 2, max_params.clip_size) # Maximum clip size
+				self.emit_signal("update_ammo_label")
+			Weapons.WeaponUpgrades.FASTER_FIRERATE:
+				set_firerate(min(firerate + 0.4, max_params.firerate))
 		pass

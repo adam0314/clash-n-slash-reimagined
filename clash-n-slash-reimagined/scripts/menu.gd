@@ -1,6 +1,7 @@
 extends Node2D
 
 func _ready():
+	randomize()
 	GameState.current_state = GameState.GameState.MENU
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	pass

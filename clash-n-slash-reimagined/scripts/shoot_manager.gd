@@ -23,32 +23,36 @@ func shoot():
 func instance_bullets():
 	match player.state.current_weapon.type:
 		Weapons.WeaponType.LASER:
-			var b_l_inst = player.state.current_weapon.bullet_node.instance()
-			b_l_inst.position = player.gun_front_pos.get_global_position()
-			b_l_inst.direction = Vector2.RIGHT.rotated(player.rotation)
-			b_l_inst.rotation = player.rotation
-			player.bullet_node.add_child(b_l_inst)
-			
-#		Weapons.WeaponType.LASER2:
-#			var b_l_insts = [BulletLaser.instance(), BulletLaser.instance()]
-#			b_l_insts[0].position = player.gun_left_pos.get_global_position()
-#			b_l_insts[1].position = player.gun_right_pos.get_global_position()
-#			for b in b_l_insts:
-#				b.direction = Vector2.RIGHT.rotated(player.rotation)
-#				b.rotation = player.rotation
-#				player.bullet_node.add_child(b)
-#
-#		Weapons.WeaponType.LASER3:
-#			var b_l_insts = [
-#				BulletLaser.instance(),
-#				BulletLaser.instance(),
-#				BulletLaser.instance()]
-#			b_l_insts[0].position = player.gun_left_pos.get_global_position()
-#			b_l_insts[1].position = player.gun_front_pos.get_global_position()
-#			b_l_insts[2].position = player.gun_right_pos.get_global_position()
-#			for b in b_l_insts:
-#				b.direction = Vector2.RIGHT.rotated(player.rotation)
-#				b.rotation = player.rotation
-#				player.bullet_node.add_child(b)
+			match player.state.current_weapon.bullets_per_shot:
+				1:
+					var b_l_inst = player.state.current_weapon.bullet_node.instance()
+					b_l_inst.speed = player.state.current_weapon.bullet_speed
+					b_l_inst.position = player.gun_front_pos.get_global_position()
+					b_l_inst.direction = Vector2.RIGHT.rotated(player.rotation)
+					b_l_inst.rotation = player.rotation
+					player.bullet_node.add_child(b_l_inst)
+				2:
+					var b_l_insts = [player.state.current_weapon.bullet_node.instance(),\
+									player.state.current_weapon.bullet_node.instance()]
+					b_l_insts[0].position = player.gun_left_pos.get_global_position()
+					b_l_insts[1].position = player.gun_right_pos.get_global_position()
+					for b in b_l_insts:
+						b.speed = player.state.current_weapon.bullet_speed
+						b.direction = Vector2.RIGHT.rotated(player.rotation)
+						b.rotation = player.rotation
+						player.bullet_node.add_child(b)
+				3:
+					var b_l_insts = [player.state.current_weapon.bullet_node.instance(),\
+									player.state.current_weapon.bullet_node.instance(),\
+									player.state.current_weapon.bullet_node.instance()]
+					b_l_insts[0].position = player.gun_left_pos.get_global_position()
+					b_l_insts[1].position = player.gun_right_pos.get_global_position()
+					b_l_insts[2].position = player.gun_front_pos.get_global_position()
+					for b in b_l_insts:
+						b.speed = player.state.current_weapon.bullet_speed
+						b.direction = Vector2.RIGHT.rotated(player.rotation)
+						b.rotation = player.rotation
+						player.bullet_node.add_child(b)
+						
 	player.gun_sound_node.play()
 	pass

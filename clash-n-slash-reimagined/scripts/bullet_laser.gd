@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var direction : Vector2
-var speed = Weapons.bullet_speed[Weapons.BulletType.LASER]
+var speed : float
 
 func _ready():
 	pass
