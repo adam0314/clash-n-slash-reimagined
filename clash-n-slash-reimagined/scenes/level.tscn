@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/ParallaxBackground.gd" type="Script" id=1]
 [ext_resource path="res://scripts/enemy_manager.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scripts/planet.gd" type="Script" id=8]
 [ext_resource path="res://sound/music/ayy_lmao_loop.ogg" type="AudioStream" id=9]
 [ext_resource path="res://scripts/ui_handler.gd" type="Script" id=10]
+[ext_resource path="res://sprite/icons/bullets_three.png" type="Texture" id=11]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 13.7861
@@ -194,9 +195,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UpgradeButton" type="Button" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer"]
-margin_left = 459.0
-margin_top = 286.0
-margin_right = 557.0
-margin_bottom = 306.0
-text = "upgrade laser"
+[node name="VBoxContainer" type="VBoxContainer" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer"]
+margin_left = 390.0
+margin_top = 246.0
+margin_right = 626.0
+margin_bottom = 346.0
+
+[node name="CenterContainer" type="CenterContainer" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer"]
+margin_right = 236.0
+margin_bottom = 14.0
+
+[node name="Label" type="Label" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer/CenterContainer"]
+margin_left = 59.0
+margin_right = 176.0
+margin_bottom = 14.0
+text = "Select an upgrade:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 236.0
+margin_bottom = 82.0
+custom_constants/separation = 64
+alignment = 1
+
+[node name="UpgButton1" type="TextureButton" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 22.0
+margin_right = 86.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+shortcut_in_tooltip = false
+texture_normal = ExtResource( 11 )
+
+[node name="UpgButton2" type="TextureButton" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 150.0
+margin_right = 214.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "xd
+"
+shortcut_in_tooltip = false
+texture_normal = ExtResource( 11 )
+
+[node name="CenterContainer2" type="CenterContainer" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer"]
+margin_top = 86.0
+margin_right = 236.0
+margin_bottom = 100.0
+
+[node name="UpgTooltipLabel" type="Label" parent="UiLayer/PopupLayer/UpgradePanel/CenterContainer/VBoxContainer/CenterContainer2"]
+margin_right = 236.0
+margin_bottom = 14.0
+text = "upgrade tooltip label Sample Text XD"

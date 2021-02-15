@@ -62,13 +62,3 @@ class PlayerData:
 			upgrades += 1
 			xp = 0
 		pass
-	
-	func upgrade_weapon():
-		match current_weapon:
-			Weapons.WeaponType.LASER1:
-				current_weapon = Weapons.WeaponType.LASER2
-			Weapons.WeaponType.LASER2:
-				current_weapon = Weapons.WeaponType.LASER3
-			_:
-				print("fuck off this is the max I have made so far")
-		pass

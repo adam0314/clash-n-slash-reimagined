@@ -29,6 +29,7 @@ Global="*res://scripts/autoload/Global.gd"
 [display]
 
 window/size/resizable=false
+mouse_cursor/custom_image="res://sprite/pointer2.png"
 
 [importer_defaults]
 
@@ -46,6 +47,11 @@ shoot={
 key_f={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"unicode":0,"echo":false,"script":null)
+ ]
+}
+key_r={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
  ]
 }
 

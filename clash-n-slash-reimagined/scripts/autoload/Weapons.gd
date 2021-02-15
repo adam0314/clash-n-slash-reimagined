@@ -159,6 +159,8 @@ class LaserModel extends WeaponModel:
 		pass
 	
 	func reload():
+		if ammo_left >= clip_size or is_reloading:
+			return
 		can_shoot = false
 		is_reloading = true
 		if not firerate_timer.is_stopped():
