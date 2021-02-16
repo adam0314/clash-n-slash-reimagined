@@ -2,16 +2,17 @@ extends Node
 
 ### Bullets
 
-enum BulletType {LASER}
+enum BulletType {LASER, MISSILE}
 
-const bullet_speed = {
-	BulletType.LASER: 400.0
+const bullet_accel = {
+	BulletType.MISSILE: 100.0
 }
 
 ### Weapons
 
 enum WeaponType {
-	LASER
+	LASER,
+	MISSILE
 }
 
 const weapon_params = {
@@ -31,8 +32,21 @@ const weapon_params = {
 			"bullet_speed": 800.0,
 			"clip_size": 16
 		}
-		
-		# TODO: Maybe add maximum (or minimum) values of some parameters here, like max clip_size
+	},
+	WeaponType.MISSILE: {
+		"firerate": 10.0,
+		"reload_time": 2.0,
+		"clip_size": 3,
+		"sound": "FUCK", # TODO: Add some missile sound here lol
+		"bullet": {
+			"node": preload("res://scenes/bullet_missile.tscn"),
+			"speed": 300.0,
+			"acceleration": 300.0
+		},
+		"max_parameters": {
+			#kek
+			#TODO: ADD THOSE
+		}
 	}
 }
 
@@ -48,7 +62,9 @@ func get_gui_node():
 func create_new_weapon(weapon_type):
 	match weapon_type:
 		WeaponType.LASER:
-			return LaserModel.new(self, weapon_params[WeaponType.LASER])
+			return LaserModel.new(self, weapon_params[weapon_type])
+		WeaponType.MISSILE:
+			return MissileModel.new(self, weapon_params[weapon_type])
 		_:
 			return null
 
@@ -207,3 +223,19 @@ class LaserModel extends WeaponModel:
 			Weapons.WeaponUpgrades.FASTER_FIRERATE:
 				set_firerate(min(firerate + 0.4, max_params.firerate))
 		pass
+
+class MissileModel extends WeaponModel:
+	
+	var bullet_node
+	var bullet_speed
+	var bullet_acceleration
+	
+	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.MISSILE, weapon_params.firerate, weapon_params.reload_time):
+		bullet_node = weapon_params.bullet.node
+		bullet_speed = weapon_params.bullet.speed
+		bullet_acceleration = weapon_params.bullet.acceleration
+		pass
+	
+	func launch_if_possible():
+		return true #TODO: add logic
+	

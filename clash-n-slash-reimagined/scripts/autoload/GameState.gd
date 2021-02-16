@@ -30,12 +30,14 @@ class PlayerData:
 	var upgrades
 	var points setget points_set, points_get
 	var current_weapon setget current_weapon_set, current_weapon_get
+	var missiles
 	
 	func _init():
 		xp = 0
 		upgrades = 0
 		points = 0
 		current_weapon = Weapons.create_new_weapon(Weapons.WeaponType.LASER)
+		missiles = Weapons.create_new_weapon(Weapons.WeaponType.MISSILE)
 	
 	func xp_get():
 		return xp

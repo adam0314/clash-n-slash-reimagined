@@ -66,9 +66,14 @@ func _physics_process(delta):
 	move_and_collide(dir_final * speed * delta)
 	pass
 
-func register_hit(bullet_type):
+func register_hit(bullet_type, splash_distance = -1.0):
 	match bullet_type:
 		Weapons.BulletType.LASER:
+			die()
+		Weapons.BulletType.MISSILE:
+			#TODO: Add hp to enemies (no one-shotting anymore)
+			# For missile, add damage fall-off based on splash distance]
+			print("MAGGOTS!")
 			die()
 	pass
 

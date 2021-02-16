@@ -20,6 +20,17 @@ func shoot():
 		instance_bullets()
 	pass
 
+func launch_missile():
+	if player.state.missiles.launch_if_possible():
+		var missile_inst = player.state.missiles.bullet_node.instance()
+		missile_inst.speed = player.state.missiles.bullet_speed
+		missile_inst.acceleration = player.state.missiles.bullet_acceleration
+		missile_inst.position = player.gun_front_pos.get_global_position()
+		missile_inst.direction = Vector2.RIGHT.rotated(player.rotation)
+		missile_inst.rotation = player.rotation
+		player.bullet_node.add_child(missile_inst)
+	pass
+
 func instance_bullets():
 	match player.state.current_weapon.type:
 		Weapons.WeaponType.LASER:

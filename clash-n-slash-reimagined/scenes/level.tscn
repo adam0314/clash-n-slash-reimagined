@@ -126,6 +126,7 @@ theme = SubResource( 3 )
 custom_constants/separation = 0
 script = ExtResource( 10 )
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -181,6 +182,7 @@ rect_min_size = Vector2( 1024, 600 )
 mouse_filter = 1
 popup_exclusive = true
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 

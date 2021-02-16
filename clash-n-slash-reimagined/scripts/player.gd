@@ -59,6 +59,8 @@ func _physics_process(delta):
 	### START SHOOT
 	if Input.is_action_pressed("shoot"):
 		shoot_manager.shoot()
+	if Input.is_action_just_pressed("launch_missile"):
+		shoot_manager.launch_missile()
 	if Input.is_action_just_pressed("key_r"):
 		state.current_weapon.reload()
 	
