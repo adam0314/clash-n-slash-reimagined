@@ -960,7 +960,7 @@ rect_min_size = Vector2( 600, 220 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="MainLayer/VBoxContainer/CenterContainer/MarginContainer"]
 frames = SubResource( 181 )
-frame = 86
+frame = 67
 playing = true
 centered = false
 

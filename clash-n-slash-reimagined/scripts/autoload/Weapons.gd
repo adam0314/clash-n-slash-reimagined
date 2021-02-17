@@ -21,6 +21,7 @@ const weapon_params = {
 		"reload_time": 1.0,
 		"bullets_per_shot": 1,
 		"clip_size": 8,
+		"dmg": 16.0,
 		"sound": preload("res://sound/pewpews/pewpew_1.wav"),
 		"bullet": {
 			"node": preload("res://scenes/bullet_laser.tscn"),
@@ -36,8 +37,10 @@ const weapon_params = {
 	WeaponType.MISSILE: {
 		"firerate": 10.0,
 		"reload_time": 2.0,
-		"clip_size": 3,
+		"max_missiles": 3,
 		"sound": "FUCK", # TODO: Add some missile sound here lol
+		"dmg": 50.0,
+		"splash_radius": 54.0,
 		"bullet": {
 			"node": preload("res://scenes/bullet_missile.tscn"),
 			"speed": 300.0,
@@ -85,15 +88,17 @@ class WeaponModel:
 	var shot_sound
 	var can_shoot : bool
 	var is_reloading : bool
+	var damage : float
 	
 	signal update_ammo_label
 	signal update_cursor_reloading
 	
-	func _init(wpn_glb_node, w, f, r_t):
+	func _init(wpn_glb_node, w, f, r_t, dmg):
 		type = w
 		firerate = f
 		reload_time = r_t
 		weapons_global_node = wpn_glb_node
+		damage = dmg
 		
 		firerate_timer = Timer.new()
 		reload_timer = Timer.new()
@@ -144,7 +149,7 @@ class LaserModel extends WeaponModel:
 	var bullet_node
 	var bullet_speed : float
 	
-	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.LASER, weapon_params.firerate, weapon_params.reload_time):
+	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.LASER, weapon_params.firerate, weapon_params.reload_time, weapon_params.dmg):
 		bullets_per_shot = weapon_params.bullets_per_shot
 		clip_size = weapon_params.clip_size
 		shot_sound = weapon_params.sound
@@ -229,13 +234,53 @@ class MissileModel extends WeaponModel:
 	var bullet_node
 	var bullet_speed
 	var bullet_acceleration
+	var max_missiles : int
+	var missiles_left : int
+	var splash_radius : float
 	
-	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.MISSILE, weapon_params.firerate, weapon_params.reload_time):
+	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.MISSILE, weapon_params.firerate, weapon_params.reload_time, weapon_params.dmg):
 		bullet_node = weapon_params.bullet.node
 		bullet_speed = weapon_params.bullet.speed
 		bullet_acceleration = weapon_params.bullet.acceleration
+		max_missiles = weapon_params.max_missiles
+		missiles_left = weapon_params.max_missiles
+		splash_radius = weapon_params.splash_radius
 		pass
 	
 	func launch_if_possible():
-		return true #TODO: add logic
+		if missiles_left <= 0:
+			return false
+		missiles_left -= 1
+		reload()
+		#TODO: add logic to accomodate firerate
+		return true
 	
+	func reload():
+		if missiles_left >= max_missiles or is_reloading:
+			return
+		#can_shoot = false
+		is_reloading = true
+		#if not firerate_timer.is_stopped():
+		#	firerate_timer.stop()
+		reload_timer.start()
+		#self.emit_signal("update_ammo_label")
+		#self.emit_signal("update_cursor_reloading")
+		pass
+	
+	func _on_reload_timer_timeout():
+		#can_shoot = true
+		is_reloading = false
+		missiles_left = min(missiles_left + 1, max_missiles)
+		reload_timer.stop()
+		#self.emit_signal("update_ammo_label")
+		#self.emit_signal("update_cursor_reloading")
+		if missiles_left < max_missiles:
+			reload() # Constantly reloading until max rockets are reached
+		pass
+	
+	func get_splash_damage(distance):
+		if distance > splash_radius:
+			return 0.0
+		# MATH
+		# okay not really, it is a linear falloff from 0 distance to splash_radius
+		return range_lerp(distance, 0.0, splash_radius, damage, 0.0)

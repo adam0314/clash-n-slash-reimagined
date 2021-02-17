@@ -1,8 +1,4 @@
-extends KinematicBody2D
-
-var enemy_type = Global.EnemyType.SMALL
-
-var speed = Global.enemy_speed[enemy_type]
+extends "res://scripts/enemies/enemy_base.gd"
 
 const wander_radius = 2.0
 const wander_distance = 15.0
@@ -11,15 +7,16 @@ const wander_jitter = 0.02
 var wander_target : Vector2
 var front
 
-var alive = true
-var time_to_delete_after_kill = 1.0 # in seconds
-var dead_time = 0.0
-
 onready var sprite : Sprite = $Sprite
 onready var collision_shape : CollisionShape2D = $CollisionShape2D
 onready var oof_player : AudioStreamPlayer = $OofPlayer
 
 func _ready():
+	init()
+	type = Global.EnemyType.SMALL
+	max_speed = Global.enemy_speed[type]
+	hp = 30.0 # Move to global
+	
 	var vector_to_planet = -global_position.normalized();
 	set_rotation(vector_to_planet.angle())
 	front = vector_to_planet
@@ -28,9 +25,12 @@ func _ready():
 
 func _physics_process(delta):
 	
+	if hp <= 0 and alive:
+		die()
+	
 	if not alive:
-		dead_time += delta
-		if dead_time >= time_to_delete_after_kill:
+		time_dead += delta
+		if time_dead >= ttl:
 			queue_free()
 		return
 		
@@ -63,22 +63,15 @@ func _physics_process(delta):
 	# end old
 	
 	set_rotation(dir_final.angle())
-	move_and_collide(dir_final * speed * delta)
+	move_and_collide(dir_final * max_speed * delta)
 	pass
 
-func register_hit(bullet_type, splash_distance = -1.0):
-	match bullet_type:
-		Weapons.BulletType.LASER:
-			die()
-		Weapons.BulletType.MISSILE:
-			#TODO: Add hp to enemies (no one-shotting anymore)
-			# For missile, add damage fall-off based on splash distance]
-			print("MAGGOTS!")
-			die()
+func deal_damage(dmg):
+	hp -= dmg
 	pass
 
 func die():
-	get_parent().handle_enemy_death(enemy_type)
+	get_parent().handle_enemy_death(type)
 	alive = false
 	sprite.visible = false
 	collision_shape.disabled = true

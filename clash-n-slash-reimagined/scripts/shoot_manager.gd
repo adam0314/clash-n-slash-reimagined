@@ -28,6 +28,8 @@ func launch_missile():
 		missile_inst.position = player.gun_front_pos.get_global_position()
 		missile_inst.direction = Vector2.RIGHT.rotated(player.rotation)
 		missile_inst.rotation = player.rotation
+		missile_inst.damage = player.state.missiles.damage
+		missile_inst.splash_radius = player.state.missiles.splash_radius
 		player.bullet_node.add_child(missile_inst)
 	pass
 
@@ -41,6 +43,7 @@ func instance_bullets():
 					b_l_inst.position = player.gun_front_pos.get_global_position()
 					b_l_inst.direction = Vector2.RIGHT.rotated(player.rotation)
 					b_l_inst.rotation = player.rotation
+					b_l_inst.damage = player.state.current_weapon.damage
 					player.bullet_node.add_child(b_l_inst)
 				2:
 					var b_l_insts = [player.state.current_weapon.bullet_node.instance(),\
@@ -51,6 +54,7 @@ func instance_bullets():
 						b.speed = player.state.current_weapon.bullet_speed
 						b.direction = Vector2.RIGHT.rotated(player.rotation)
 						b.rotation = player.rotation
+						b.damage = player.state.current_weapon.damage
 						player.bullet_node.add_child(b)
 				3:
 					var b_l_insts = [player.state.current_weapon.bullet_node.instance(),\
@@ -63,6 +67,7 @@ func instance_bullets():
 						b.speed = player.state.current_weapon.bullet_speed
 						b.direction = Vector2.RIGHT.rotated(player.rotation)
 						b.rotation = player.rotation
+						b.damage = player.state.current_weapon.damage
 						player.bullet_node.add_child(b)
 						
 	player.gun_sound_node.play()

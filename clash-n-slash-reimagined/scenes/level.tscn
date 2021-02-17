@@ -64,9 +64,11 @@ volume_db = -10.0
 
 [node name="GunLeftPos2D" type="Position2D" parent="player"]
 position = Vector2( 12.5, -10 )
+z_index = -1
 
 [node name="GunRightPos2D" type="Position2D" parent="player"]
 position = Vector2( 12.5, 10 )
+z_index = -1
 
 [node name="planet" type="KinematicBody2D" parent="."]
 pause_mode = 2
