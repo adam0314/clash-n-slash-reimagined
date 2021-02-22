@@ -7,12 +7,12 @@ const wander_jitter = 0.02
 var wander_target : Vector2
 var front
 
-onready var sprite : Sprite = $Sprite
 onready var collision_shape : CollisionShape2D = $CollisionShape2D
 onready var oof_player : AudioStreamPlayer = $OofPlayer
 
 func _ready():
 	init()
+	sprite = $Sprite
 	type = Global.EnemyType.SMALL
 	max_speed = Global.enemy_speed[type]
 	hp = 30.0 # Move to global
@@ -64,10 +64,6 @@ func _physics_process(delta):
 	
 	set_rotation(dir_final.angle())
 	move_and_collide(dir_final * max_speed * delta)
-	pass
-
-func deal_damage(dmg):
-	hp -= dmg
 	pass
 
 func die():

@@ -38,9 +38,8 @@ const weapon_params = {
 		"firerate": 10.0,
 		"reload_time": 2.0,
 		"max_missiles": 3,
-		"sound": "FUCK", # TODO: Add some missile sound here lol
-		"dmg": 50.0,
-		"splash_radius": 54.0,
+		"dmg": 64.0,
+		"splash_radius": 60.0,
 		"bullet": {
 			"node": preload("res://scenes/bullet_missile.tscn"),
 			"speed": 300.0,
@@ -238,6 +237,8 @@ class MissileModel extends WeaponModel:
 	var missiles_left : int
 	var splash_radius : float
 	
+	signal update_missiles
+	
 	func _init(weapons_global_node, weapon_params).(weapons_global_node, WeaponType.MISSILE, weapon_params.firerate, weapon_params.reload_time, weapon_params.dmg):
 		bullet_node = weapon_params.bullet.node
 		bullet_speed = weapon_params.bullet.speed
@@ -247,10 +248,15 @@ class MissileModel extends WeaponModel:
 		splash_radius = weapon_params.splash_radius
 		pass
 	
+	func connect_to_display():
+		self.connect("update_missiles", weapons_global_node.get_gui_node(), "_on_update_missiles")
+		pass
+	
 	func launch_if_possible():
 		if missiles_left <= 0:
 			return false
 		missiles_left -= 1
+		self.emit_signal("update_missiles")
 		reload()
 		#TODO: add logic to accomodate firerate
 		return true
@@ -271,6 +277,7 @@ class MissileModel extends WeaponModel:
 		#can_shoot = true
 		is_reloading = false
 		missiles_left = min(missiles_left + 1, max_missiles)
+		self.emit_signal("update_missiles")
 		reload_timer.stop()
 		#self.emit_signal("update_ammo_label")
 		#self.emit_signal("update_cursor_reloading")

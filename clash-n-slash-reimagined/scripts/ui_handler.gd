@@ -4,6 +4,7 @@ onready var points_label_node : Label = $VBoxTopCont/PointsLabel
 onready var upg_ready_node : Label = $VBoxTopCont/UpgReadyNode
 onready var upg_panel_node : PopupPanel = get_parent().find_node("UpgradePanel")
 onready var ammo_label_node : Label = $VBoxBtmCont/AmmoCont/AmmoLabel
+onready var missiles_node : TextureRect = $VBoxBtmCont/AmmoCont/Missiles
 
 onready var upg_button_1 : TextureButton = upg_panel_node.find_node("UpgButton1")
 onready var upg_button_2 : TextureButton = upg_panel_node.find_node("UpgButton2")
@@ -35,6 +36,7 @@ var upg_tooltips = {
 func _ready():
 	upg_ready_node.visible = false
 	GameState.player_state.current_weapon.connect_to_display()
+	GameState.player_state.missiles.connect_to_display()
 	_on_update_ammo_display()
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	crosshair_node = Crosshair.instance()
@@ -45,7 +47,7 @@ func _ready():
 	upg_button_2.connect("mouse_entered", self, "_on_upg_button_mouse_entered", [upg_button_2])
 	upg_button_1.connect("mouse_exited", self, "_on_upg_button_mouse_exited")
 	upg_button_2.connect("mouse_exited", self, "_on_upg_button_mouse_exited")
-	
+	_on_update_missiles()
 	pass
 
 func _process(delta):
@@ -107,5 +109,15 @@ func set_available_upgrade():
 
 func _on_reloading():
 	crosshair_node.toggle_reloading(GameState.player_state.current_weapon.is_reloading)
+	pass
+
+func _on_update_missiles():
+	var missile_texture_size_x = missiles_node.texture.get_size().x
+	var missiles_left = GameState.player_state.missiles.missiles_left
+	if missiles_left <= 0:
+		missiles_node.visible = false
+	else:
+		missiles_node.set_custom_minimum_size(Vector2(missiles_left * missile_texture_size_x,0))
+		missiles_node.visible = true
 	pass
 

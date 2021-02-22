@@ -51,22 +51,24 @@ func _physics_process(delta):
 		if collision.collider.is_in_group("enemy"): #Direct hit lol
 			collision.collider.deal_damage(damage)
 		
-		explode()
+		explode(collision)
 	
 	if global_position.length() > Global.max_distance_from_planet:
 		queue_free()
 	speed += acceleration * delta
 	pass
 
-func explode():
+func explode(collider_to_delete):
 	exploded = true
 	var splash_collisions = blast_area.get_overlapping_bodies()
+	splash_collisions.erase(collider_to_delete)
 	if splash_collisions.size() > 0: #Something is in radius of missile blast!
 		for splash_col in splash_collisions:
 			if splash_col.is_in_group("enemy"):
-				var splash_distance = (splash_col.get_global_position() - self.get_global_position()).length()
+				var splash_distance = (splash_col.get_global_position() - blast_area.get_global_position()).length()
 				var splash_damage = GameState.player_state.missiles.get_splash_damage(splash_distance)
-				splash_col.deal_damage(damage)
+				#print(splash_damage)
+				splash_col.deal_damage(splash_damage)
 	collision_node.disabled = true
 	sprite.visible = false
 	audio_node.stream = boom_audio

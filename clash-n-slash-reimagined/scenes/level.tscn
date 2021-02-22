@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/ParallaxBackground.gd" type="Script" id=1]
 [ext_resource path="res://scripts/enemy_manager.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://sound/music/ayy_lmao_loop.ogg" type="AudioStream" id=9]
 [ext_resource path="res://scripts/ui_handler.gd" type="Script" id=10]
 [ext_resource path="res://sprite/icons/bullets_three.png" type="Texture" id=11]
+[ext_resource path="res://sprite/spaceMissiles_006_repeat.png" type="Texture" id=12]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 13.7861
@@ -157,15 +158,23 @@ custom_constants/separation = 0
 alignment = 2
 
 [node name="AmmoCont" type="HBoxContainer" parent="UiLayer/UiMainContainer/VBoxBtmCont"]
-margin_top = 286.0
+margin_top = 260.0
 margin_right = 1024.0
 margin_bottom = 300.0
 alignment = 2
 
+[node name="Missiles" type="TextureRect" parent="UiLayer/UiMainContainer/VBoxBtmCont/AmmoCont"]
+margin_left = 901.0
+margin_right = 920.0
+margin_bottom = 40.0
+texture = ExtResource( 12 )
+stretch_mode = 2
+
 [node name="AmmoLabel" type="Label" parent="UiLayer/UiMainContainer/VBoxBtmCont/AmmoCont"]
 margin_left = 924.0
+margin_top = 13.0
 margin_right = 1024.0
-margin_bottom = 14.0
+margin_bottom = 27.0
 rect_min_size = Vector2( 100, 0 )
 
 [node name="HpCont" type="HBoxContainer" parent="UiLayer/UiMainContainer/VBoxBtmCont"]

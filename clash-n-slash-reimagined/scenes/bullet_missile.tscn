@@ -86,20 +86,20 @@ animations = [ {
 "speed": 60.0
 } ]
 
-[sub_resource type="Gradient" id=18]
+[sub_resource type="Gradient" id=17]
 offsets = PoolRealArray( 0, 0.533333, 0.851852 )
 colors = PoolColorArray( 0.872528, 0.978793, 0.0267639, 1, 0.990511, 0.0348227, 0.0348227, 1, 0, 0, 0, 1 )
 
-[sub_resource type="GradientTexture" id=19]
-gradient = SubResource( 18 )
+[sub_resource type="GradientTexture" id=18]
+gradient = SubResource( 17 )
 
-[sub_resource type="Curve" id=20]
+[sub_resource type="Curve" id=19]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.10519 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=21]
-curve = SubResource( 20 )
+[sub_resource type="CurveTexture" id=20]
+curve = SubResource( 19 )
 
-[sub_resource type="ParticlesMaterial" id=17]
+[sub_resource type="ParticlesMaterial" id=21]
 flag_disable_z = true
 spread = 6.0
 gravity = Vector3( 0, 0, 0 )
@@ -107,8 +107,8 @@ initial_velocity = 114.94
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 0.02
-scale_curve = SubResource( 21 )
-color_ramp = SubResource( 19 )
+scale_curve = SubResource( 20 )
+color_ramp = SubResource( 18 )
 
 [node name="bullet_missile" type="KinematicBody2D"]
 collision_layer = 2
@@ -146,5 +146,5 @@ position = Vector2( -9.573, 0 )
 rotation = 3.14159
 z_index = -1
 amount = 12
-process_material = SubResource( 17 )
+process_material = SubResource( 21 )
 texture = ExtResource( 5 )
