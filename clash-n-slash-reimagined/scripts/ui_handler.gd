@@ -15,6 +15,9 @@ var upg_2 : int
 onready var Crosshair = preload("res://scenes/crosshair.tscn")
 var crosshair_node : Node2D
 
+onready var hp_player_node : TextureProgress = $VBoxBtmCont/HpCont/HpPlayer
+onready var hp_planet_node : TextureProgress = $VBoxBtmCont/HpCont/HpPlanet
+
 var upg_textures = {
 	Weapons.WeaponUpgrades.BULLETS_TWO: preload("res://sprite/icons/bullets_two.png"),
 	Weapons.WeaponUpgrades.BULLETS_THREE: preload("res://sprite/icons/bullets_three.png"),
@@ -48,6 +51,7 @@ func _ready():
 	upg_button_1.connect("mouse_exited", self, "_on_upg_button_mouse_exited")
 	upg_button_2.connect("mouse_exited", self, "_on_upg_button_mouse_exited")
 	_on_update_missiles()
+	update_player_hp()
 	pass
 
 func _process(delta):
@@ -65,8 +69,8 @@ func _process(delta):
 			GameState.pause()
 	pass
 
-func update_points(points_value):
-	points_label_node.text = "points: " + str(points_value)
+func update_points():
+	points_label_node.text = "points: " + str(GameState.player_state.points)
 
 func _on_update_ammo_display():
 	match GameState.player_state.current_weapon.type:
@@ -121,3 +125,6 @@ func _on_update_missiles():
 		missiles_node.visible = true
 	pass
 
+func update_player_hp():
+	hp_player_node.value = GameState.player_state.hp
+	pass

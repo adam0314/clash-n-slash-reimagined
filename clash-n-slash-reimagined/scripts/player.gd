@@ -63,6 +63,8 @@ func _physics_process(delta):
 		shoot_manager.launch_missile()
 	if Input.is_action_just_pressed("key_r"):
 		state.current_weapon.reload()
+	if Input.is_action_just_pressed("ui_down"):
+		GameState.lose()
 	
 	### END SHOOT
 	

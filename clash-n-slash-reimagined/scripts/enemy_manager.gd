@@ -25,5 +25,10 @@ func handle_enemy_death(enemy_type):
 	match enemy_type:
 		Global.EnemyType.SMALL:
 			GameState.player_state.add_xp(100)
-	GameState.get_gui_node().update_points(GameState.player_state.points)
+	pass
+
+func handle_player_hit(enemy_type):
+	match enemy_type:
+		Global.EnemyType.SMALL:
+			GameState.player_state.register_damage(5)
 	pass

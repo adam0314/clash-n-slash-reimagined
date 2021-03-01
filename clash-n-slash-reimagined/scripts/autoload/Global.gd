@@ -17,3 +17,5 @@ const enemy_speed = {
 	EnemyType.SMALL: 40.0
 }
 
+func get_gui_node():
+	return get_tree().get_nodes_in_group("ui")[0]

@@ -6,6 +6,7 @@ const wander_jitter = 0.02
 
 var wander_target : Vector2
 var front
+var enemy_manager
 
 onready var collision_shape : CollisionShape2D = $CollisionShape2D
 onready var oof_player : AudioStreamPlayer = $OofPlayer
@@ -21,6 +22,7 @@ func _ready():
 	set_rotation(vector_to_planet.angle())
 	front = vector_to_planet
 	wander_target = Vector2.RIGHT
+	enemy_manager = get_parent()
 	pass
 
 func _physics_process(delta):
@@ -63,11 +65,16 @@ func _physics_process(delta):
 	# end old
 	
 	set_rotation(dir_final.angle())
-	move_and_collide(dir_final * max_speed * delta)
+	var collision = move_and_collide(dir_final * max_speed * delta)
+	if collision:
+		if collision.collider.is_in_group("player"):
+			enemy_manager.handle_player_hit(type)
+			die()
+			pass
 	pass
 
 func die():
-	get_parent().handle_enemy_death(type)
+	enemy_manager.handle_enemy_death(type)
 	alive = false
 	sprite.visible = false
 	collision_shape.disabled = true

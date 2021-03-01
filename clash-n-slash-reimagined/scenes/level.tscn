@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/ParallaxBackground.gd" type="Script" id=1]
 [ext_resource path="res://scripts/enemy_manager.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://scripts/ui_handler.gd" type="Script" id=10]
 [ext_resource path="res://sprite/icons/bullets_three.png" type="Texture" id=11]
 [ext_resource path="res://sprite/spaceMissiles_006_repeat.png" type="Texture" id=12]
+[ext_resource path="res://sprite/white_bar.png" type="Texture" id=13]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 13.7861
@@ -40,7 +41,9 @@ texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 3560, 800 )
 
-[node name="player" type="KinematicBody2D" parent="."]
+[node name="player" type="KinematicBody2D" parent="." groups=[
+"player",
+]]
 position = Vector2( 80.6504, -67.6312 )
 script = ExtResource( 7 )
 __meta__ = {
@@ -153,14 +156,14 @@ text = "upgrade available, press F hehe"
 margin_top = 300.0
 margin_right = 1024.0
 margin_bottom = 600.0
-rect_min_size = Vector2( 0, 300 )
+rect_min_size = Vector2( 1024, 300 )
 custom_constants/separation = 0
 alignment = 2
 
 [node name="AmmoCont" type="HBoxContainer" parent="UiLayer/UiMainContainer/VBoxBtmCont"]
-margin_top = 260.0
+margin_top = 230.0
 margin_right = 1024.0
-margin_bottom = 300.0
+margin_bottom = 270.0
 alignment = 2
 
 [node name="Missiles" type="TextureRect" parent="UiLayer/UiMainContainer/VBoxBtmCont/AmmoCont"]
@@ -178,9 +181,32 @@ margin_bottom = 27.0
 rect_min_size = Vector2( 100, 0 )
 
 [node name="HpCont" type="HBoxContainer" parent="UiLayer/UiMainContainer/VBoxBtmCont"]
-margin_top = 300.0
+margin_top = 270.0
 margin_right = 1024.0
 margin_bottom = 300.0
+rect_min_size = Vector2( 1024, 0 )
+custom_constants/separation = 640
+alignment = 1
+
+[node name="HpPlayer" type="TextureProgress" parent="UiLayer/UiMainContainer/VBoxBtmCont/HpCont"]
+margin_right = 192.0
+margin_bottom = 30.0
+value = 100.0
+texture_under = ExtResource( 13 )
+texture_progress = ExtResource( 13 )
+tint_under = Color( 0, 0, 0, 1 )
+tint_progress = Color( 1, 0, 0, 1 )
+
+[node name="HpPlanet" type="TextureProgress" parent="UiLayer/UiMainContainer/VBoxBtmCont/HpCont"]
+margin_left = 832.0
+margin_right = 1024.0
+margin_bottom = 30.0
+value = 100.0
+texture_under = ExtResource( 13 )
+texture_progress = ExtResource( 13 )
+fill_mode = 1
+tint_under = Color( 0, 0, 0, 1 )
+tint_progress = Color( 0.87451, 1, 0, 1 )
 
 [node name="PopupLayer" type="CanvasLayer" parent="UiLayer"]
 layer = 9
