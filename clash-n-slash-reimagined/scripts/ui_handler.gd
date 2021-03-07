@@ -1,10 +1,9 @@
 extends VBoxContainer
 
-onready var points_label_node : Label = $VBoxTopCont/PointsLabel
-onready var upg_ready_node : Label = $VBoxTopCont/UpgReadyNode
+onready var points_label_node : RichTextLabel = $BtmCont/XpPtsCont/PointsLabel
 onready var upg_panel_node : PopupPanel = get_parent().find_node("UpgradePanel")
-onready var ammo_label_node : Label = $VBoxBtmCont/AmmoCont/AmmoLabel
-onready var missiles_node : TextureRect = $VBoxBtmCont/AmmoCont/Missiles
+onready var ammo_label_node : Label = $BtmCont/PlayerDataCont/AmmoCont/AmmoLabel
+onready var missiles_node : TextureRect = $BtmCont/PlayerDataCont/AmmoCont/Missiles
 
 onready var upg_button_1 : TextureButton = upg_panel_node.find_node("UpgButton1")
 onready var upg_button_2 : TextureButton = upg_panel_node.find_node("UpgButton2")
@@ -15,8 +14,9 @@ var upg_2 : int
 onready var Crosshair = preload("res://scenes/crosshair.tscn")
 var crosshair_node : Node2D
 
-onready var hp_player_node : TextureProgress = $VBoxBtmCont/HpCont/HpPlayer
-onready var hp_planet_node : TextureProgress = $VBoxBtmCont/HpCont/HpPlanet
+onready var hp_player_node : TextureProgress = $BtmCont/PlayerDataCont/HpPlayer
+onready var hp_planet_node : TextureProgress = $BtmCont/PlanetDataCont/HpPlanet
+onready var xp_node : ProgressBar = $BtmCont/XpPtsCont/CenterContainer/Xp
 
 var upg_textures = {
 	Weapons.WeaponUpgrades.BULLETS_TWO: preload("res://sprite/icons/bullets_two.png"),
@@ -37,7 +37,6 @@ var upg_tooltips = {
 }
 
 func _ready():
-	upg_ready_node.visible = false
 	GameState.player_state.current_weapon.connect_to_display()
 	GameState.player_state.missiles.connect_to_display()
 	_on_update_ammo_display()
@@ -56,9 +55,9 @@ func _ready():
 
 func _process(delta):
 	crosshair_node.position = get_global_mouse_position()
+	var pts_txt = "[center]" + str(GameState.player_state.points) + "[/center]"
 	if GameState.player_state.upgrades > 0:
-		if not upg_ready_node.visible:
-			upg_ready_node.visible = true
+		pts_txt = "[color=green]" + pts_txt + "[/color]"
 		if Input.is_action_just_pressed("key_f"):
 			if upg_panel_node.visible:
 				return
@@ -67,10 +66,8 @@ func _process(delta):
 			crosshair_node.visible = false
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			GameState.pause()
+	points_label_node.bbcode_text = pts_txt
 	pass
-
-func update_points():
-	points_label_node.text = "points: " + str(GameState.player_state.points)
 
 func _on_update_ammo_display():
 	match GameState.player_state.current_weapon.type:
@@ -84,7 +81,6 @@ func _on_upgrade_button_pressed(button):
 	upg_1 = -1
 	upg_2 = -1
 	upg_panel_node.visible = false
-	upg_ready_node.visible = false
 	crosshair_node.visible = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	GameState.unpause()
@@ -127,4 +123,12 @@ func _on_update_missiles():
 
 func update_player_hp():
 	hp_player_node.value = GameState.player_state.hp
+	pass
+
+func update_planet_hp():
+	hp_planet_node.value = GameState.planet_state.hp
+	pass
+
+func update_xp():
+	xp_node.value = GameState.player_state.get_xp_percentage()
 	pass

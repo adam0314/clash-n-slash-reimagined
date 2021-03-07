@@ -32,3 +32,8 @@ func handle_player_hit(enemy_type):
 		Global.EnemyType.SMALL:
 			GameState.player_state.register_damage(5)
 	pass
+
+func handle_planet_hit(enemy_type):
+	match enemy_type:
+		Global.EnemyType.SMALL:
+			GameState.planet_state.register_damage(5)

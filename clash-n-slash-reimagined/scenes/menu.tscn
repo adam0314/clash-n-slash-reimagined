@@ -1,10 +1,11 @@
-[gd_scene load_steps=188 format=2]
+[gd_scene load_steps=189 format=2]
 
 [ext_resource path="res://scripts/ParallaxBackground.gd" type="Script" id=1]
 [ext_resource path="res://sprite/bg_space2_halfres.png" type="Texture" id=2]
 [ext_resource path="res://gif/ayy_lmao_title_spritesheet.png" type="Texture" id=3]
 [ext_resource path="res://scripts/menu.gd" type="Script" id=4]
 [ext_resource path="res://sound/music/_009_system.ogg" type="AudioStream" id=5]
+[ext_resource path="res://fonts/font_theme.tres" type="Theme" id=6]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -944,6 +945,7 @@ current = true
 [node name="TabContainer" type="TabContainer" parent="MainLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 6 )
 custom_styles/panel = SubResource( 1 )
 tabs_visible = false
 __meta__ = {
@@ -959,9 +961,9 @@ __meta__ = {
 }
 
 [node name="CenterContainer" type="CenterContainer" parent="MainLayer/TabContainer/VBoxContainer"]
-margin_top = 178.0
+margin_top = 175.0
 margin_right = 1024.0
-margin_bottom = 398.0
+margin_bottom = 395.0
 
 [node name="MarginContainer" type="MarginContainer" parent="MainLayer/TabContainer/VBoxContainer/CenterContainer"]
 margin_left = 212.0
@@ -971,19 +973,19 @@ rect_min_size = Vector2( 600, 220 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="MainLayer/TabContainer/VBoxContainer/CenterContainer/MarginContainer"]
 frames = SubResource( 182 )
-frame = 26
+frame = 4
 playing = true
 centered = false
 
 [node name="CenterContainer2" type="CenterContainer" parent="MainLayer/TabContainer/VBoxContainer"]
-margin_top = 402.0
+margin_top = 399.0
 margin_right = 1024.0
-margin_bottom = 422.0
+margin_bottom = 425.0
 
 [node name="Button" type="Button" parent="MainLayer/TabContainer/VBoxContainer/CenterContainer2"]
-margin_left = 490.0
-margin_right = 533.0
-margin_bottom = 20.0
+margin_left = 477.0
+margin_right = 546.0
+margin_bottom = 26.0
 text = "PLAY"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MainLayer/TabContainer"]
@@ -1005,9 +1007,9 @@ margin_right = 1024.0
 margin_bottom = 319.0
 
 [node name="Button" type="Button" parent="MainLayer/TabContainer/VBoxContainer2/CenterContainer"]
-margin_left = 462.0
-margin_right = 561.0
-margin_bottom = 20.0
+margin_left = 448.0
+margin_right = 575.0
+margin_bottom = 26.0
 text = "back to menu"
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]

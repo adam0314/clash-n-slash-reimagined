@@ -69,8 +69,9 @@ func _physics_process(delta):
 	if collision:
 		if collision.collider.is_in_group("player"):
 			enemy_manager.handle_player_hit(type)
-			die()
-			pass
+		if collision.collider.is_in_group("planet"):
+			enemy_manager.handle_planet_hit(type)
+		die()
 	pass
 
 func die():

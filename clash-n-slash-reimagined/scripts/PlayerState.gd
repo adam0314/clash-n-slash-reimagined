@@ -1,4 +1,4 @@
-class PlayerData:
+class PlayerState:
 	
 	# Variables w/ setters / getters
 	
@@ -43,8 +43,11 @@ class PlayerData:
 		if xp >= 1000: # Replace with some constant - maybe a XP per level table
 			upgrades += 1
 			xp = 0
-		Global.get_gui_node().update_points()
+		Global.get_gui_node().update_xp()
 		pass
+	
+	func get_xp_percentage():
+		return floor((float(xp) / 1000.0)*100.0)
 	
 	func register_damage(dmg):
 		hp -= dmg

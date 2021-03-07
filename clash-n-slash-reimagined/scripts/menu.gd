@@ -26,6 +26,7 @@ func update_tab():
 	pass
 
 func _on_Button_pressed():
+	GameState.reset_game_state()
 	get_tree().change_scene("res://scenes/level.tscn")
 	GameState.game_state = GameState.GameState.PLAYING
 	pass
